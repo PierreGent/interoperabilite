@@ -26,7 +26,7 @@ public class Main {
         try {
             //Put in the first place the user with which you created the bot account
             //Put as password what you get when you create the bot account
-            con.login("Root", "D063520Bot@sp5048gejd1nodi5n6o2tj5ocanj063o");
+            con.login("Root", "D063520Bot@XXXXXXXXXX");
         } catch (LoginFailedException e) {
             e.printStackTrace();
         }
