@@ -5,6 +5,7 @@ import org.wikidata.wdtk.datamodel.helpers.ItemDocumentBuilder;
 import org.wikidata.wdtk.datamodel.helpers.StatementBuilder;
 import org.wikidata.wdtk.util.WebResourceFetcherImpl;
 import org.wikidata.wdtk.wikibaseapi.ApiConnection;
+import org.wikidata.wdtk.wikibaseapi.WbSearchEntitiesResult;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataEditor;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataFetcher;
 import org.wikidata.wdtk.datamodel.interfaces.*;
@@ -12,6 +13,7 @@ import org.wikidata.wdtk.wikibaseapi.LoginFailedException;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class Main {
@@ -26,7 +28,7 @@ public class Main {
         try {
             //Put in the first place the user with which you created the bot account
             //Put as password what you get when you create the bot account
-            con.login("Root", "D063520Bot@XXXXXXXXXX");
+            con.login("Root", "D063520Bot@XXXXXXXXXXXXXX");
         } catch (LoginFailedException e) {
             e.printStackTrace();
         }
@@ -41,6 +43,12 @@ public class Main {
         System.out.println(laboratoireHC.getLabels());
         System.out.println(laboratoireHC.getStatementGroups());
         System.out.println(laboratoireHC.getDescriptions());
+
+        //Example to search for an ID given the label
+        List<WbSearchEntitiesResult> entities = wbdf.searchEntities("Pierre Maret");
+        for (WbSearchEntitiesResult entity : entities){
+            System.out.println(entity.getEntityId());
+        }
 
         //Example for writing information about an entity, here the example of creating Florance Garrelie working at Laboratoire Huber Curien
         //For more examples give a look at: https://github.com/Wikidata/Wikidata-Toolkit-Examples/blob/master/src/examples/EditOnlineDataExample.java
