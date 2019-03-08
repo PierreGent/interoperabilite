@@ -14,6 +14,7 @@ import org.wikidata.wdtk.wikibaseapi.LoginFailedException;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,6 +23,12 @@ public class Main {
     // final static String siteIri = "https://wdaqua-biennale-design.univ-st-etienne.fr/wikibase/index.php/";
 
     public static void main(String[] args) throws MediaWikiApiErrorException {
+
+
+        ArrayList<Ecole> infoCSV = null;
+        ParseurCSV csv = new ParseurCSV();
+        infoCSV = csv.ParseurCSV();
+        //dans infoCSV on a la liste des ecole de la zone du haut lignon
 
         WebResourceFetcherImpl.setUserAgent("Wikidata Toolkit EditOnlineDataExample");
 
