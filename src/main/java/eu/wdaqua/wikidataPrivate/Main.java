@@ -14,6 +14,8 @@ import org.wikidata.wdtk.wikibaseapi.LoginFailedException;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,6 +24,115 @@ public class Main {
     // final static String siteIri = "https://wdaqua-biennale-design.univ-st-etienne.fr/wikibase/index.php/";
 
     public static void main(String[] args) throws MediaWikiApiErrorException {
+
+      /*
+
+        Ecole e = new Ecole();
+        e.setCode("A1234");
+        e.setCodePostal("43520");
+        e.setNom("Ecole TEST");
+        e.transfer();
+*/
+
+
+
+
+        /**
+         * Déclarations des listes pour stocker les infos trouvées
+         * Une liste par source
+         */
+        ArrayList<Elu> listeElu = null;
+        ArrayList<Service> listeService = null;
+        ArrayList<Ecole> listeEcole = null;
+
+
+        ParseurBDD bdd = new ParseurBDD();
+        /**
+         * Instanciation du parseur HTML avec l'URL a traitée
+         */
+        ParseurHTML parseur = new ParseurHTML("https://www.ville-lechambonsurlignon.fr/mairie/les-services-municipaux-3.html");
+        ParseurCSV csv = new ParseurCSV();
+
+
+        System.out.println("Hello World!");
+
+
+        listeService = parseur.parseur();
+
+
+
+        /**
+         *
+         *
+         *
+         *
+         * lancer le transfer sur la liste :
+         *
+         *
+         * getResponsable ne fonctionne pas ???
+         *
+         *  04.77.86.85.95
+         *
+         * quand on met le num de telephone : Malformed input ! Numero nul !!!
+         */
+
+
+        for(int i=0; i<listeService.size();i++){
+            System.out.println(listeService.get(i).toString());
+            //listeService.get(i).transfer();
+            System.out.println("XXXXXXXXX");
+            System.out.println(listeService.get(i).getNumero());
+            listeService.get(i).setNumero(listeService.get(i).getNumero().substring(1,listeService.get(i).getNumero().length()));
+
+           // listeService.get(i).transfer();
+            System.out.println("XXXXXXXXX");
+        }
+        System.out.println("\n");
+        listeEcole = csv.ParseurCSV();
+        System.out.println("\n");
+        try {
+            listeElu = bdd.ParseurBDD();
+        } catch (SQLException error) {
+            System.out.println("Erreur base de donnée !");
+            error.printStackTrace();
+        }
+
+
+        Ecole e;
+
+        for(int i =0 ; i<listeEcole.size();i++){
+            e=listeEcole.get(i);
+           //e.transfer();
+        }
+
+
+
+
+        Service s = new Service();
+
+        String resu = s.getResponsable(listeService.get(1).getResponsable());
+
+        System.out.println(resu);
+
+
+
+
+
+
+
+
+        Elu elu;
+        for(int i=0; i<listeElu.size();i++){
+            elu=listeElu.get(i);
+            //System.out.println(elu.codePostal + " "+elu.getPrenom() + " "+elu.getDateNaissance());
+            //elu.transfer();
+        }
+        /*
+
+        ArrayList<Ecole> infoCSV = null;
+        ParseurCSV csv = new ParseurCSV();
+        infoCSV = csv.ParseurCSV();
+        //dans infoCSV on a la liste des ecole de la zone du haut lignon
 
         WebResourceFetcherImpl.setUserAgent("Wikidata Toolkit EditOnlineDataExample");
 
@@ -57,21 +168,44 @@ public class Main {
         //Example for writing information about an entity, here the example of creating MisterX living in Chambon Sur Lignon
         //For more examples give a look at: https://github.com/Wikidata/Wikidata-Toolkit-Examples/blob/master/src/examples/EditOnlineDataExample.java
         WikibaseDataEditor wbde = new WikibaseDataEditor(con, siteIri);
-        PropertyDocument propertyTravaille = (PropertyDocument) wbdf.getEntityDocument("P580");
-        System.out.println(propertyTravaille.getLabels());
+        PropertyDocument propertyAdesse = (PropertyDocument) wbdf.getEntityDocument("P173");
+        PropertyDocument property = (PropertyDocument) wbdf.getEntityDocument("P173");
+        System.out.println(propertyAdesse.getLabels());
 
         ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
 //        Statement statement1 = StatementBuilder
 //                .forSubjectAndProperty(noid, propertyTravaille.getPropertyId())
 //                .withValue(Datamodel.makeStringValue("bluuuu")).build();
 
-        StatementBuilder s = StatementBuilder.forSubjectAndProperty(noid, propertyTravaille.getPropertyId());
+        StatementBuilder s = StatementBuilder.forSubjectAndProperty(noid, propertyAdesse.getPropertyId());
         s.withValue(Datamodel.makeItemIdValue("Q2",siteIri));
 
         Statement stat = s.build();
 
+
+        /*
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel("Mister X", "en")
+                .withLabel("Nom de l'ecole", "fr")
+                .withStatement(stat).build();
+        try {
+            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument,
+                    "Statement created by our bot");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Created Mister X lives in chambon");
+        System.out.println(itemDocument.getItemId().getId());
+
+
+
+
+
+
+
+ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
+
+
+        .withLabel("Mister X", "en")
                 .withLabel("Mister X", "fr")
                 .withStatement(stat).build();
         try {
@@ -82,6 +216,13 @@ public class Main {
         }
         System.out.println("Created Mister X lives in chambon");
         System.out.println(itemDocument.getItemId().getId());
+         */
+
+
+
+
+
+
 
 
     }

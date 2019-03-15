@@ -9,7 +9,14 @@ public class ParseurBDD {
     public Connection c;
     public ResultSet rs ;
 
-    public ArrayList<Info> ParseurBDD() throws SQLException {
+    public ArrayList<Elu> ParseurBDD() throws SQLException {
+
+
+
+        ArrayList<Elu> listeElu = new ArrayList<Elu>();
+
+
+
 
         ArrayList<Info> listeInfo = new ArrayList<Info>();
         //on charge le driver
@@ -43,18 +50,30 @@ public class ParseurBDD {
 
             int columnsNumber = rsmd.getColumnCount();
             while (rs.next()) {
+                Elu elu = new Elu();
                 String nom = rs.getString(5);
+                elu.setNom(nom);
                 String prenom = rs.getString(6);
+                elu.setPrenom(prenom);
                 String commune = rs.getString(3);
                 String identite = nom;
                 identite=identite.concat(" ");
                 identite=identite.concat(prenom);
                 listeInfo.add(new Info(identite,"est_élu_dans_la_commune",commune));
                 String codecom = rs.getString(2);
+
+                String naissance = rs.getString(8);
+
+                elu.setDateNaissance(naissance);
+
                 if (codecom.length() == 2){
                     codecom = "0".concat(codecom);
                     //si le code commune a 2 caractere on ajoute le zero pour faire le code postal
                 }
+
+
+
+
 
                 String cp = rs.getString(1);
                 if (cp.length() == 1){
@@ -64,8 +83,10 @@ public class ParseurBDD {
                 cp = cp.concat(codecom);
                 //le code postal est le numero du departement a 2 chiffres suivi du code commune a 3 chiffres
 
+                elu.setCodePostal(cp);
                 listeInfo.add(new Info(commune,"a_pour_code_postal",cp));
 
+                listeElu.add(elu);
             }
 
         } catch (SQLException e1) {
@@ -76,7 +97,7 @@ public class ParseurBDD {
 
         System.out.println("Analyse base de donnée terminée :\n" +
                 "Informations trouvées : "+listeInfo.size());
-        return  listeInfo;
+        return  listeElu;
 
     }
 }

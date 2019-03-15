@@ -6,4 +6,4 @@ To create a bot account:
 - give the bot all rights
 - Insert your newly generated password into https://github.com/D063520/botPrivateWiki_Java/blob/master/src/main/java/eu/wdaqua/wikidataPrivate/Main.java and start editing the wiki via Java. Enjoy!
 # interoperabilite
-Answering questions about Chambon sur lignon.
+Answering questions about Chambon sur lignon
